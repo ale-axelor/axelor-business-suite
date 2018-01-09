@@ -17,16 +17,25 @@
  */
 package com.axelor.apps.contract.service;
 
+import com.axelor.apps.account.db.Account;
+import com.axelor.apps.account.db.AccountManagement;
+import com.axelor.apps.account.db.FiscalPosition;
 import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.account.db.InvoiceLine;
+import com.axelor.apps.account.db.Tax;
+import com.axelor.apps.account.db.TaxLine;
 import com.axelor.apps.account.db.repo.InvoiceLineRepository;
 import com.axelor.apps.account.db.repo.InvoiceRepository;
+import com.axelor.apps.account.service.FiscalPositionServiceAccountImpl;
+import com.axelor.apps.account.service.invoice.InvoiceLineService;
 import com.axelor.apps.account.service.invoice.InvoiceService;
 import com.axelor.apps.account.service.invoice.InvoiceServiceImpl;
 import com.axelor.apps.account.service.invoice.generator.InvoiceGenerator;
 import com.axelor.apps.account.service.invoice.generator.InvoiceLineGenerator;
 import com.axelor.apps.base.db.IPriceListLine;
 import com.axelor.apps.base.service.app.AppBaseService;
+import com.axelor.apps.base.service.tax.AccountManagementService;
+import com.axelor.apps.base.service.tax.FiscalPositionService;
 import com.axelor.apps.contract.db.ConsumptionLine;
 import com.axelor.apps.contract.db.Contract;
 import com.axelor.apps.contract.db.ContractLine;
@@ -322,7 +331,21 @@ public class ContractServiceImpl extends ContractRepository implements ContractS
 				return invoiceLines;
 			}
 		};
+
 		InvoiceLine invoiceLine = invoiceLineGenerator.creates().get(0);
+
+		FiscalPositionServiceAccountImpl fiscalPositionService = Beans.get(FiscalPositionServiceAccountImpl.class);
+		FiscalPosition fiscalPosition = line.getFiscalPosition();
+		Account currentAccount = invoiceLine.getAccount();
+		Account replacedAccount = fiscalPositionService.getAccount(fiscalPosition, currentAccount);
+
+		boolean isPurchase = Beans.get(InvoiceLineService.class).isPurchase(invoice);
+
+		TaxLine taxLine = Beans.get(AccountManagementService.class)
+				.getTaxLine(Beans.get(AppBaseService.class).getTodayDate(), invoiceLine.getProduct(), invoice.getCompany(), fiscalPosition, isPurchase);
+
+		invoiceLine.setTaxLine(taxLine);
+		invoiceLine.setAccount(replacedAccount);
 
 		invoice.addInvoiceLineListItem(invoiceLine);
 

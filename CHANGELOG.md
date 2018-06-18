@@ -21,6 +21,7 @@ Also, improve the sale order line grid and form views
 - Stock move: hide button generate invoice if internal stock move
 - Fix NPE happening in invoice lines.
 - Financial account : Fix NPE(PersistanceException) while persistence of new account. 
+- Fix line removal in confirmed sale order.
 
 ## [5.0.0] - 2018-06-13
 ## Features

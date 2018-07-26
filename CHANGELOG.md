@@ -2,6 +2,7 @@
 ## [Unreleased 5.0.5]
 ## Improvements
 - Marketing app: added FR demo data
+- Split formula list into formulas for product and formulas for sale order line in configurator creator.
 
 ## Bug Fixes
 

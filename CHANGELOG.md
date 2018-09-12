@@ -49,6 +49,7 @@
 - Business Project : Fill default values from Project while generating the sale Quotation.
 - Business Project : Enhancement of task and project view.
 - Project : Change invoicing project view.
+- Production: new report showing raw material requirements.
 
 ## Improvements
 - Move project resource menu entry to project configuration menu.

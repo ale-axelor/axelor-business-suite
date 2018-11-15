@@ -173,8 +173,9 @@ public class SaleOrderStockServiceImpl implements SaleOrderStockService {
     }
 
     if (Beans.get(AppSupplychainService.class).getAppSupplychain().getManageStockReservation()) {
-        stockMove = updateSOLinesReservedQty(stockMove);
-      }return stockMove;
+      stockMove = updateSOLinesReservedQty(stockMove);
+    }
+    return stockMove;
   }
 
   protected Map<LocalDate, List<SaleOrderLine>> getAllSaleOrderLinePerDate(SaleOrder saleOrder) {

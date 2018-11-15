@@ -176,7 +176,8 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
     updateSaleOrderLinesDeliveryState(stockMove, false);
   }
 
-  protected void updateSaleOrderLinesDeliveryState(StockMove stockMove, boolean realize) throws AxelorException {
+  protected void updateSaleOrderLinesDeliveryState(StockMove stockMove, boolean realize)
+      throws AxelorException {
     for (StockMoveLine stockMoveLine : stockMove.getStockMoveLineList()) {
       if (stockMoveLine.getSaleOrderLine() != null) {
         SaleOrderLine saleOrderLine = stockMoveLine.getSaleOrderLine();

@@ -246,13 +246,12 @@ public class StockMoveLineServiceSupplychainImpl extends StockMoveLineServiceImp
       int toStatus,
       LocalDate lastFutureStockMoveDate,
       TrackingNumber trackingNumber,
-      BigDecimal requestedReservedQty,
-      BigDecimal reservedQty)
+      BigDecimal requestedReservedQty)
       throws AxelorException {
     BigDecimal convertedRequestedReservedQty = stockMoveLine.getRequestedReservedQty();
     Unit productUnit = product.getUnit();
     Unit stockMoveLineUnit = stockMoveLine.getUnit();
-    if (productUnit != null && !productUnit.equals(stockMoveLineUnit)) {
+    if (stockMoveLineUnit != null && !stockMoveLineUnit.equals(productUnit)) {
       qty =
           unitConversionService.convertWithProduct(
               stockMoveLineUnit, productUnit, qty, stockMoveLine.getProduct());
@@ -263,44 +262,6 @@ public class StockMoveLineServiceSupplychainImpl extends StockMoveLineServiceImp
               convertedRequestedReservedQty,
               stockMoveLine.getProduct());
     }
-
-    // the quantity that will be allocated in stock location line
-    BigDecimal realReservedQty;
-
-    // the quantity that will be allocated in stock move line
-    BigDecimal realReservedStockMoveQty;
-
-    // if the status was planned, the quantity will be subtracted so we use the previous reserved
-    // quantity stored in stock move line.
-    if (fromStatus == StockMoveRepository.STATUS_PLANNED) {
-      realReservedStockMoveQty = stockMoveLine.getReservedQty();
-
-      // convert the quantity for stock location line
-      if (productUnit != null && !productUnit.equals(stockMoveLineUnit)) {
-        realReservedQty =
-            unitConversionService.convertWithProduct(
-                stockMoveLineUnit,
-                productUnit,
-                realReservedStockMoveQty,
-                stockMoveLine.getProduct());
-      } else {
-        realReservedQty = realReservedStockMoveQty;
-      }
-    } else {
-      realReservedQty =
-          stockLocationLineServiceSupplychainImpl.computeRealReservedQty(
-              fromStockLocation, product, convertedRequestedReservedQty);
-      // convert back the quantity for the stock move line
-      if (productUnit != null && !productUnit.equals(stockMoveLineUnit)) {
-        realReservedStockMoveQty =
-            unitConversionService.convertWithProduct(
-                productUnit, stockMoveLineUnit, realReservedQty, stockMoveLine.getProduct());
-      } else {
-        realReservedStockMoveQty = realReservedQty;
-      }
-    }
-
-    stockMoveLine.setReservedQty(realReservedStockMoveQty);
     super.updateLocations(
         stockMoveLine,
         fromStockLocation,
@@ -311,8 +272,18 @@ public class StockMoveLineServiceSupplychainImpl extends StockMoveLineServiceImp
         toStatus,
         lastFutureStockMoveDate,
         trackingNumber,
-        convertedRequestedReservedQty,
-        realReservedQty);
+        convertedRequestedReservedQty);
+
+    Beans.get(ReservedQtyService.class)
+        .updateRequestedQuantityInLocations(
+            stockMoveLine,
+            fromStockLocation,
+            toStockLocation,
+            product,
+            qty,
+            convertedRequestedReservedQty,
+            fromStatus,
+            toStatus);
   }
 
   @Override

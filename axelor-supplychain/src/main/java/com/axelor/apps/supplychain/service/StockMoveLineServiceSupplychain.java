@@ -19,6 +19,7 @@ package com.axelor.apps.supplychain.service;
 
 import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.Unit;
+import com.axelor.apps.sale.db.SaleOrderLine;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.exception.AxelorException;
@@ -41,6 +42,7 @@ public interface StockMoveLineServiceSupplychain {
    * @param type
    * @param taxed
    * @param taxRate
+   * @param saleOrderLine
    * @return the created stock move line.
    * @throws AxelorException
    */
@@ -55,6 +57,7 @@ public interface StockMoveLineServiceSupplychain {
       StockMove stockMove,
       int type,
       boolean taxed,
-      BigDecimal taxRate)
+      BigDecimal taxRate,
+      SaleOrderLine saleOrderLine)
       throws AxelorException;
 }

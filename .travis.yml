@@ -1,0 +1,3 @@
+language: java
+before_install: ./travis_scripts/before_install.sh
+install: ./gradlew assemble -x spotlessApply

@@ -25,9 +25,7 @@ public class BankAddressService {
     // fullAddress = label address (code)
     String fullAddress = "";
     fullAddress = label;
-    if (fullAddress == null || fullAddress.equals("")) {
-      fullAddress = "";
-    } else {
+    if (fullAddress == null || fullAddress.equals("")) { fullAddress = ""; } else {
       fullAddress += " ";
     }
     fullAddress += address;

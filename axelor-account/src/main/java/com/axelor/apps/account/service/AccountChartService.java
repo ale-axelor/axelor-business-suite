@@ -65,6 +65,7 @@ public class AccountChartService {
       throws AxelorException {
     try {
 
+      //add comment
       if (act.getMetaFile() == null) {
         return false;
       }

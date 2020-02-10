@@ -19,7 +19,7 @@ jobs:
     - name: Install webapp
       run: git clone https://github.com/axelor/open-suite-webapp.git open-suite-webapp && cd open-suite-webapp && git checkout dev
     - name: move to the right place
-      run: mkdir -p open-suite-webapp/modules/axelor-open-suite && ls | grep -v open-suite-webapp | xargs -I{} mv {} open-suite-webapp/modules/axelor-open-suite
+      run: mkdir -p open-suite-webapp/modules/axelor-open-suite && ls | grep -v open-suite-webapp | xargs -I{} mv {} open-suite-webapp/modules/axelor-open-suite && cd open-suite-webapp
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle

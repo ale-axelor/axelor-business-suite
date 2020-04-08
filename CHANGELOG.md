@@ -1,4 +1,5 @@
 # Changelog
+- Implement github CI ?
 ## [5.2.4] - 2020-02-05
 ## Improvements
 - BankOrder: Display of Signatory ebics user and Sending date time in report.

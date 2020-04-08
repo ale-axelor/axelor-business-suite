@@ -32,7 +32,7 @@ public class AccountAccountRepository extends AccountRepository {
       }
 
       if (account.getReconcileOk()) {
-        Set<Account> accountList = account.getCompatibleAccountSet();
+        Set<Account> accountList = account.getCompatibleAccountSet()
 
         if (accountList != null) {
           for (Account acc : accountList) {

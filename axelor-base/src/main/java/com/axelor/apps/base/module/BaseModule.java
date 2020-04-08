@@ -170,8 +170,7 @@ public class BaseModule extends AxelorModule {
     bind(ICalendarEventService.class).to(ICalendarEventServiceImpl.class);
     bind(ICalendarEventRepository.class).to(ICalendarEventManagementRepository.class);
     bind(ProductMultipleQtyService.class).to(ProductMultipleQtyServiceImpl.class);
-    bind(BarcodeGeneratorService.class).to(BarcodeGeneratorServiceImpl.class);
-    PartnerAddressRepository.modelPartnerFieldMap.put(PartnerAddress.class.getName(), "_parent");
+    bind(BarcodeGeneratorService.class).to(BarcodeGeneratorServiceImpl.class); PartnerAddressRepository.modelPartnerFieldMap.put(PartnerAddress.class.getName(), "_parent");
     bind(PeriodService.class).to(PeriodServiceImpl.class);
     bind(ConvertDemoDataFileService.class).to(ConvertDemoDataFileServiceImpl.class);
     bind(ImportDemoDataService.class).to(ImportDemoDataServiceImpl.class);

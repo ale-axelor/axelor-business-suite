@@ -59,7 +59,7 @@ public class UserServiceTest {
   public void testMatchPasswordPatternUpperLowerDigit() {
     Assert.assertTrue(userService.matchPasswordPattern("Axelor123"));
     Assert.assertTrue(userService.matchPasswordPattern("123Axelor"));
-    Assert.assertTrue(userService.matchPasswordPattern("axelor123A"));
+    Assert.assertTrue(userService.matchPasswordPattern("axelor"));
   }
 
   @Test

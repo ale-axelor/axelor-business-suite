@@ -2,8 +2,8 @@ name: Java CI
 
 on:
   pull_request:
-    branches: 
-      - dev    
+    branches:
+      - dev
 
 jobs:
   build:
@@ -22,5 +22,9 @@ jobs:
       run: mkdir -p modules/axelor-open-suite && mv * modules/axelor-open-suite
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
+    - name: Check spotless format with gradle task
       run: ./gradlew spotlessCheck
+    - name: Build without tests
+      run: ./gradlew -xtest clean build
+    - name: Run tests
+      run: ./gradlew test

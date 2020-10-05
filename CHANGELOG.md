@@ -7,11 +7,11 @@
 * PRODUCTION: created buttons in product to create new bill of material and production process.
 * Axelor DocuSign: add new module axelor-docusign.
 * Axelor Project DMS: add new module axelor-project-dms.
-* PRINT TEMPLATE: Rework print template feature.
 
   <details>
-  "Add new configurations for print template: print format, sequence, columns
-    number, conditions, signature"
+  <summary markdown="span">PRINT TEMPLATE: Rework print template feature.</summary>
+  Add new configurations for print template: print format, sequence, columns
+    number, conditions, signature
   </details>
 
 * TEMPLATE: update template engine: the user can now choose between StringTemplate or groovy.

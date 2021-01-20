@@ -2,7 +2,7 @@
 
 #### Features
 
-* AppBase: Add currency conversion web service using fixer api.
+* AppBse: Add currency conversion web service using fixer api.
 
 #### Changes
 

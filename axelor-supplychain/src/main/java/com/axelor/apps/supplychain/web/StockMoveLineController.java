@@ -22,7 +22,7 @@ import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.apps.stock.db.repo.StockMoveLineRepository;
 import com.axelor.apps.supplychain.exception.IExceptionMessage;
-import com.axelor.apps.supplychain.service.ReservedQtyService;
+import com.axelor.apps.supplychain.service.stockreservation.StockMoveLineReservationService;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.exception.service.TraceBackService;
@@ -95,8 +95,8 @@ public class StockMoveLineController {
   }
 
   /**
-   * Called from stock move form view, on clicking allocateAll button on one stock move line. Call
-   * {@link ReservedQtyService#allocateAll(StockMoveLine)}.
+   * Called from stock move form view, on clicking allocate button on one stock move line. Call
+   * {@link StockMoveLineReservationService#allocate(StockMoveLine)}.
    *
    * @param request
    * @param response
@@ -111,7 +111,7 @@ public class StockMoveLineController {
             TraceBackRepository.CATEGORY_INCONSISTENCY,
             I18n.get(IExceptionMessage.SALE_ORDER_LINE_PRODUCT_NOT_STOCK_MANAGED));
       }
-      Beans.get(ReservedQtyService.class).allocateAll(stockMoveLine);
+      Beans.get(StockMoveLineReservationService.class).allocate(stockMoveLine);
       response.setReload(true);
     } catch (Exception e) {
       TraceBackService.trace(response, e);
@@ -119,8 +119,8 @@ public class StockMoveLineController {
   }
 
   /**
-   * Called from stock move form view, on clicking allocateAll button on one stock move line. Call
-   * {@link ReservedQtyService#updateReservedQty(stockMoveLine, BigDecimal.ZERO)}.
+   * Called from stock move form view, on clicking allocate button on one stock move line. Call
+   * {@link StockMoveLineReservationService#deallocate(StockMoveLine)}.
    *
    * @param request
    * @param response
@@ -129,7 +129,7 @@ public class StockMoveLineController {
     try {
       StockMoveLine stockMoveLine = request.getContext().asType(StockMoveLine.class);
       stockMoveLine = Beans.get(StockMoveLineRepository.class).find(stockMoveLine.getId());
-      Beans.get(ReservedQtyService.class).updateReservedQty(stockMoveLine, BigDecimal.ZERO);
+      Beans.get(StockMoveLineReservationService.class).deallocate(stockMoveLine);
       response.setReload(true);
     } catch (Exception e) {
       TraceBackService.trace(response, e);
@@ -138,7 +138,7 @@ public class StockMoveLineController {
 
   /**
    * Called from stock move line form view, on request qty click. Call {@link
-   * ReservedQtyService#requestQty(StockMoveLine)}.
+   * StockMoveLineReservationService#requestQty(StockMoveLine)}.
    *
    * @param request
    * @param response
@@ -153,7 +153,7 @@ public class StockMoveLineController {
             TraceBackRepository.CATEGORY_INCONSISTENCY,
             I18n.get(IExceptionMessage.SALE_ORDER_LINE_PRODUCT_NOT_STOCK_MANAGED));
       }
-      Beans.get(ReservedQtyService.class).requestQty(stockMoveLine);
+      Beans.get(StockMoveLineReservationService.class).requestQty(stockMoveLine);
       response.setReload(true);
     } catch (Exception e) {
       TraceBackService.trace(response, e);
@@ -162,7 +162,7 @@ public class StockMoveLineController {
 
   /**
    * Called from stock move line form view, on request qty click. Call {@link
-   * ReservedQtyService#cancelReservation(StockMoveLine)}.
+   * StockMoveLineReservationService#cancelReservation(StockMoveLine)}.
    *
    * @param request
    * @param response
@@ -177,7 +177,7 @@ public class StockMoveLineController {
             TraceBackRepository.CATEGORY_INCONSISTENCY,
             I18n.get(IExceptionMessage.SALE_ORDER_LINE_PRODUCT_NOT_STOCK_MANAGED));
       }
-      Beans.get(ReservedQtyService.class).cancelReservation(stockMoveLine);
+      Beans.get(StockMoveLineReservationService.class).cancelReservation(stockMoveLine);
       response.setReload(true);
     } catch (Exception e) {
       TraceBackService.trace(response, e);
@@ -186,7 +186,7 @@ public class StockMoveLineController {
 
   /**
    * Called from stock move line request quantity wizard view. Call {@link
-   * ReservedQtyService#updateReservedQty(StockMoveLine, BigDecimal)}.
+   * StockMoveLineReservationService#updateReservedQty(StockMoveLine, BigDecimal)}.
    *
    * @param request
    * @param response
@@ -203,7 +203,8 @@ public class StockMoveLineController {
             TraceBackRepository.CATEGORY_INCONSISTENCY,
             I18n.get(IExceptionMessage.SALE_ORDER_LINE_PRODUCT_NOT_STOCK_MANAGED));
       }
-      Beans.get(ReservedQtyService.class).updateReservedQty(stockMoveLine, newReservedQty);
+      Beans.get(StockMoveLineReservationService.class)
+          .updateReservedQty(stockMoveLine, newReservedQty);
       response.setReload(true);
     } catch (Exception e) {
       TraceBackService.trace(response, e);

@@ -28,9 +28,9 @@ import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.apps.stock.service.PartnerProductQualityRatingService;
 import com.axelor.apps.stock.service.StockMoveLineService;
 import com.axelor.apps.stock.service.StockMoveToolService;
-import com.axelor.apps.supplychain.service.ReservedQtyService;
 import com.axelor.apps.supplychain.service.StockMoveServiceSupplychainImpl;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
+import com.axelor.apps.supplychain.service.stockreservation.ReservedQtyStockWorkflowService;
 import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
@@ -49,7 +49,7 @@ public class StockMoveProductionServiceImpl extends StockMoveServiceSupplychainI
       PurchaseOrderRepository purchaseOrderRepo,
       SaleOrderRepository saleOrderRepo,
       UnitConversionService unitConversionService,
-      ReservedQtyService reservedQtyService,
+      ReservedQtyStockWorkflowService reservedQtyStockWorkflowService,
       ProductRepository productRepository) {
     super(
         stockMoveLineService,
@@ -62,7 +62,7 @@ public class StockMoveProductionServiceImpl extends StockMoveServiceSupplychainI
         purchaseOrderRepo,
         saleOrderRepo,
         unitConversionService,
-        reservedQtyService,
+        reservedQtyStockWorkflowService,
         productRepository);
   }
 

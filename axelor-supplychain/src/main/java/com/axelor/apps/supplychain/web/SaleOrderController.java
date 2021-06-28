@@ -39,11 +39,11 @@ import com.axelor.apps.supplychain.exception.IExceptionMessage;
 import com.axelor.apps.supplychain.service.SaleOrderCreateServiceSupplychainImpl;
 import com.axelor.apps.supplychain.service.SaleOrderInvoiceService;
 import com.axelor.apps.supplychain.service.SaleOrderPurchaseService;
-import com.axelor.apps.supplychain.service.SaleOrderReservedQtyService;
 import com.axelor.apps.supplychain.service.SaleOrderServiceSupplychainImpl;
 import com.axelor.apps.supplychain.service.SaleOrderStockService;
 import com.axelor.apps.supplychain.service.SaleOrderSupplychainService;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
+import com.axelor.apps.supplychain.service.stockreservation.SaleOrderReservedQtyService;
 import com.axelor.db.JPA;
 import com.axelor.db.mapper.Mapper;
 import com.axelor.exception.AxelorException;
@@ -745,7 +745,7 @@ public class SaleOrderController {
 
   /**
    * Called from the toolbar in sale order form view. Call {@link
-   * com.axelor.apps.supplychain.service.SaleOrderReservedQtyService#allocateAll(SaleOrder)}.
+   * SaleOrderReservedQtyService#allocateAll(SaleOrder)}.
    *
    * @param request
    * @param response
@@ -763,7 +763,7 @@ public class SaleOrderController {
 
   /**
    * Called from the toolbar in sale order form view. Call {@link
-   * com.axelor.apps.supplychain.service.SaleOrderReservedQtyService#deallocateAll(SaleOrder)}.
+   * SaleOrderReservedQtyService#deallocateAll(SaleOrder)}.
    *
    * @param request
    * @param response
@@ -781,7 +781,7 @@ public class SaleOrderController {
 
   /**
    * Called from the toolbar in sale order form view. Call {@link
-   * com.axelor.apps.supplychain.service.SaleOrderReservedQtyService#reserveAll(SaleOrder)}.
+   * SaleOrderReservedQtyService#reserveAll(SaleOrder)}.
    *
    * @param request
    * @param response
@@ -799,7 +799,7 @@ public class SaleOrderController {
 
   /**
    * Called from the toolbar in sale order form view. Call {@link
-   * com.axelor.apps.supplychain.service.SaleOrderReservedQtyService#cancelReservation(SaleOrder)}.
+   * SaleOrderReservedQtyService#cancelReservation(SaleOrder)}.
    *
    * @param request
    * @param response

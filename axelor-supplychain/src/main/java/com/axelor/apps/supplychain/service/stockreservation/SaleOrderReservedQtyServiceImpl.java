@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.axelor.apps.supplychain.service;
+package com.axelor.apps.supplychain.service.stockreservation;
 
 import com.axelor.apps.sale.db.SaleOrder;
 import com.axelor.apps.sale.db.SaleOrderLine;
@@ -25,20 +25,20 @@ import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.exception.AxelorException;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SaleOrderReservedQtyServiceImpl implements SaleOrderReservedQtyService {
 
-  protected ReservedQtyService reservedQtyService;
+  protected SaleOrderLineStockReservationService saleOrderLineStockReservationService;
   protected StockMoveLineRepository stockMoveLineRepository;
 
   @Inject
   public SaleOrderReservedQtyServiceImpl(
-      ReservedQtyService reservedQtyService, StockMoveLineRepository stockMoveLineRepository) {
-    this.reservedQtyService = reservedQtyService;
+      SaleOrderLineStockReservationService saleOrderLineStockReservationService,
+      StockMoveLineRepository stockMoveLineRepository) {
+    this.saleOrderLineStockReservationService = saleOrderLineStockReservationService;
     this.stockMoveLineRepository = stockMoveLineRepository;
   }
 
@@ -46,7 +46,7 @@ public class SaleOrderReservedQtyServiceImpl implements SaleOrderReservedQtyServ
   @Transactional(rollbackOn = {Exception.class})
   public void allocateAll(SaleOrder saleOrder) throws AxelorException {
     for (SaleOrderLine saleOrderLine : getNonDeliveredLines(saleOrder)) {
-      reservedQtyService.allocateAll(saleOrderLine);
+      saleOrderLineStockReservationService.allocate(saleOrderLine);
     }
   }
 
@@ -54,7 +54,7 @@ public class SaleOrderReservedQtyServiceImpl implements SaleOrderReservedQtyServ
   @Transactional(rollbackOn = {Exception.class})
   public void deallocateAll(SaleOrder saleOrder) throws AxelorException {
     for (SaleOrderLine saleOrderLine : getNonDeliveredLines(saleOrder)) {
-      reservedQtyService.updateReservedQty(saleOrderLine, BigDecimal.ZERO);
+      saleOrderLineStockReservationService.deallocate(saleOrderLine);
     }
   }
 
@@ -62,7 +62,7 @@ public class SaleOrderReservedQtyServiceImpl implements SaleOrderReservedQtyServ
   @Transactional(rollbackOn = {Exception.class})
   public void reserveAll(SaleOrder saleOrder) throws AxelorException {
     for (SaleOrderLine saleOrderLine : getNonDeliveredLines(saleOrder)) {
-      reservedQtyService.requestQty(saleOrderLine);
+      saleOrderLineStockReservationService.requestQty(saleOrderLine);
     }
   }
 
@@ -70,7 +70,7 @@ public class SaleOrderReservedQtyServiceImpl implements SaleOrderReservedQtyServ
   @Transactional(rollbackOn = {Exception.class})
   public void cancelReservation(SaleOrder saleOrder) throws AxelorException {
     for (SaleOrderLine saleOrderLine : getNonDeliveredLines(saleOrder)) {
-      reservedQtyService.cancelReservation(saleOrderLine);
+      saleOrderLineStockReservationService.cancelReservation(saleOrderLine);
     }
   }
 

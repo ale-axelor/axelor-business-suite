@@ -30,6 +30,7 @@ import com.axelor.apps.stock.service.StockLocationLineServiceImpl;
 import com.axelor.apps.stock.service.StockRulesService;
 import com.axelor.apps.supplychain.exception.IExceptionMessage;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
+import com.axelor.apps.supplychain.service.stockreservation.StockLocationLineReservationService;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
@@ -133,7 +134,8 @@ public class StockLocationLineServiceSupplychainImpl extends StockLocationLineSe
     stockLocationLine = super.updateLocationFromProduct(stockLocationLine, product);
 
     if (appSupplychainService.isApp("supplychain")) {
-      Beans.get(ReservedQtyService.class).updateRequestedReservedQty(stockLocationLine);
+      Beans.get(StockLocationLineReservationService.class)
+          .updateRequestedReservedQty(stockLocationLine);
     }
 
     return stockLocationLine;

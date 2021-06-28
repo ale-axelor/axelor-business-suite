@@ -39,6 +39,7 @@ import com.axelor.apps.stock.service.StockMoveServiceImpl;
 import com.axelor.apps.stock.service.StockMoveToolService;
 import com.axelor.apps.supplychain.exception.IExceptionMessage;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
+import com.axelor.apps.supplychain.service.stockreservation.ReservedQtyStockWorkflowService;
 import com.axelor.common.ObjectUtils;
 import com.axelor.db.JPA;
 import com.axelor.exception.AxelorException;
@@ -69,7 +70,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
   protected PurchaseOrderRepository purchaseOrderRepo;
   protected SaleOrderRepository saleOrderRepo;
   protected UnitConversionService unitConversionService;
-  protected ReservedQtyService reservedQtyService;
+  protected ReservedQtyStockWorkflowService reservedQtyStockWorkflowService;
 
   @Inject private StockMoveLineServiceSupplychain stockMoveLineServiceSupplychain;
 
@@ -85,7 +86,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
       PurchaseOrderRepository purchaseOrderRepo,
       SaleOrderRepository saleOrderRepo,
       UnitConversionService unitConversionService,
-      ReservedQtyService reservedQtyService,
+      ReservedQtyStockWorkflowService reservedQtyStockWorkflowService,
       ProductRepository productRepository) {
     super(
         stockMoveLineService,
@@ -99,7 +100,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
     this.purchaseOrderRepo = purchaseOrderRepo;
     this.saleOrderRepo = saleOrderRepo;
     this.unitConversionService = unitConversionService;
-    this.reservedQtyService = reservedQtyService;
+    this.reservedQtyStockWorkflowService = reservedQtyStockWorkflowService;
   }
 
   @Override
@@ -146,7 +147,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
       Beans.get(PurchaseOrderRepository.class).save(purchaseOrder);
     }
     if (appSupplyChainService.getAppSupplychain().getManageStockReservation()) {
-      Beans.get(ReservedQtyService.class)
+      Beans.get(ReservedQtyStockWorkflowService.class)
           .updateReservedQuantity(stockMove, StockMoveRepository.STATUS_REALIZED);
     }
 
@@ -202,7 +203,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
     }
     super.cancel(stockMove);
     if (appSupplyChainService.getAppSupplychain().getManageStockReservation()) {
-      Beans.get(ReservedQtyService.class)
+      Beans.get(ReservedQtyStockWorkflowService.class)
           .updateReservedQuantity(stockMove, StockMoveRepository.STATUS_CANCELED);
     }
   }
@@ -215,7 +216,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
 
     if (appSupplychainService.getAppSupplychain().getManageStockReservation()
         && appSupplychainService.isApp("supplychain")) {
-      Beans.get(ReservedQtyService.class)
+      Beans.get(ReservedQtyStockWorkflowService.class)
           .updateReservedQuantity(stockMove, StockMoveRepository.STATUS_PLANNED);
     }
   }
@@ -367,7 +368,7 @@ public class StockMoveServiceSupplychainImpl extends StockMoveServiceImpl
       newStockMoveLine.setRequestedReservedQty(requestedReservedQty);
       newStockMoveLine.setReservedQty(BigDecimal.ZERO);
 
-      reservedQtyService.deallocateStockMoveLineAfterSplit(
+      reservedQtyStockWorkflowService.deallocateStockMoveLineAfterSplit(
           stockMoveLine, stockMoveLine.getReservedQty());
       stockMoveLine.setReservedQty(BigDecimal.ZERO);
     }

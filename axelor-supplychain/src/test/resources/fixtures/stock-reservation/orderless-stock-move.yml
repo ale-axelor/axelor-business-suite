@@ -1,0 +1,261 @@
+- !Company: &company
+  name: Axelor
+  code: AXE
+  supplyChainConfig:
+    !SupplyChainConfig:
+    autoAllocateOnAllocation: true
+    autoAllocateOnReceipt: true
+
+- !AppBase:
+  today: 2021-06-18T07:57:00Z
+  name: Base
+  code: base
+
+- !AppSupplychain:
+  blockDeallocationOnAvailabilityRequest: true
+  name: Supplychain
+  code: supplychain
+
+- !StockLocation: &internalStockLocation
+  typeSelect: 1
+  name: Internal stock location
+  company: *company
+
+- !StockLocation: &virtualStockLocation
+  typeSelect: 3
+  name: Virtual stock location
+  company: *company
+
+- !Unit: &unit
+  name: Unit
+
+- !Product: &product
+  name: First product
+  unit: *unit
+  stockManaged: true
+
+- !Product: &productPartAllocated
+  name: Second product
+  unit: *unit
+  stockManaged: true
+
+- !Product: &productFullAllocated
+  name: Fully allocated product
+  unit: *unit
+  stockManaged: true
+
+- !Product: &productToRealize
+  name: To realize product
+  unit: *unit
+  stockManaged: true
+
+- !Product: &productToCancel
+  name: To cancel product
+  unit: *unit
+  stockManaged: true
+
+- !StockLocationLine:
+  stockLocation: *internalStockLocation
+  product: *product
+  unit: *unit
+  currentQty: 10
+  requestedReservedQty: 0
+  reservedQty: 0
+
+- !StockLocationLine:
+  stockLocation: *virtualStockLocation
+  product: *product
+  unit: *unit
+  currentQty: 0
+  requestedReservedQty: 0
+  reservedQty: 0
+
+- !StockLocationLine:
+  stockLocation: *internalStockLocation
+  product: *productPartAllocated
+  unit: *unit
+  currentQty: 12
+  requestedReservedQty: 7
+  reservedQty: 7
+
+- !StockLocationLine:
+  stockLocation: *virtualStockLocation
+  product: *productPartAllocated
+  unit: *unit
+  currentQty: 0
+  requestedReservedQty: 0
+  reservedQty: 0
+
+- !StockLocationLine:
+  stockLocation: *internalStockLocation
+  product: *productFullAllocated
+  unit: *unit
+  currentQty: 10
+  requestedReservedQty: 10
+  reservedQty: 10
+
+- !StockLocationLine:
+  stockLocation: *virtualStockLocation
+  product: *productFullAllocated
+  unit: *unit
+  currentQty: 0
+  requestedReservedQty: 0
+  reservedQty: 0
+
+- !StockLocationLine:
+  stockLocation: *internalStockLocation
+  product: *productToRealize
+  unit: *unit
+  currentQty: 10
+  requestedReservedQty: 10
+  reservedQty: 10
+
+- !StockLocationLine:
+  stockLocation: *virtualStockLocation
+  product: *productToRealize
+  unit: *unit
+  currentQty: 0
+  requestedReservedQty: 0
+  reservedQty: 0
+
+- !StockLocationLine:
+  stockLocation: *internalStockLocation
+  product: *productToCancel
+  unit: *unit
+  currentQty: 10
+  requestedReservedQty: 10
+  reservedQty: 10
+
+- !StockLocationLine:
+  stockLocation: *virtualStockLocation
+  product: *productToCancel
+  unit: *unit
+  currentQty: 0
+  requestedReservedQty: 0
+  reservedQty: 0
+
+- !StockMove:
+  name: "orderlessOutStockMove"
+  statusSelect: 2
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *product
+      productName: First product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 10
+      realQty: 10
+      reservedQty: 0
+      requestedReservedQty: 10
+
+- !StockMove:
+  name: "partiallyAllocatedOutStockMove"
+  statusSelect: 2
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *productPartAllocated
+      productName: Second product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 10
+      realQty: 10
+      reservedQty: 3
+      requestedReservedQty: 10
+
+- !StockMove:
+  name: "alreadyAllocatedOutStockMove"
+  statusSelect: 2
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *productPartAllocated
+      productName: Second product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 4
+      realQty: 4
+      reservedQty: 4
+      requestedReservedQty: 4
+
+- !StockMove:
+  name: "stockMoveNoQtyAvailable"
+  statusSelect: 2
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *productFullAllocated
+      productName: Fully allocated product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 10
+      realQty: 10
+      reservedQty: 0
+      requestedReservedQty: 10
+
+- !StockMove:
+  name: "fullyAlreadyAllocatedOutStockMove"
+  statusSelect: 2
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *productFullAllocated
+      productName: Fully allocated product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 10
+      realQty: 10
+      reservedQty: 10
+      requestedReservedQty: 10
+
+- !StockMove:
+  name: "stockMoveToRealize"
+  statusSelect: 3
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *productToRealize
+      productName: To realize product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 10
+      realQty: 10
+      reservedQty: 10
+      requestedReservedQty: 10
+
+- !StockMove:
+  name: "stockMoveToCancel"
+  statusSelect: 4
+  typeSelect: 2
+  fromStockLocation: *internalStockLocation
+  toStockLocation: *virtualStockLocation
+  company: *company
+  stockMoveLineList:
+    - !StockMoveLine:
+      product: *productToCancel
+      productName: To cancel product
+      reservationDateTime: 2021-05-18T07:57:00Z
+      unit: *unit
+      qty: 10
+      realQty: 10
+      reservedQty: 10
+      requestedReservedQty: 10

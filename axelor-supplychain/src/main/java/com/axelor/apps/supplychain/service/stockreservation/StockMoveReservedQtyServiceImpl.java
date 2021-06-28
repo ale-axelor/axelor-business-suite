@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.axelor.apps.supplychain.service;
+package com.axelor.apps.supplychain.service.stockreservation;
 
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.StockMoveLine;
@@ -26,11 +26,12 @@ import java.util.stream.Collectors;
 
 public class StockMoveReservedQtyServiceImpl implements StockMoveReservedQtyService {
 
-  protected ReservedQtyService reservedQtyService;
+  protected StockMoveLineReservationService stockMoveLineReservationService;
 
   @Inject
-  public StockMoveReservedQtyServiceImpl(ReservedQtyService reservedQtyService) {
-    this.reservedQtyService = reservedQtyService;
+  public StockMoveReservedQtyServiceImpl(
+      StockMoveLineReservationService stockMoveLineReservationService) {
+    this.stockMoveLineReservationService = stockMoveLineReservationService;
   }
 
   @Override
@@ -43,7 +44,7 @@ public class StockMoveReservedQtyServiceImpl implements StockMoveReservedQtyServ
             .filter(stockMoveLine -> stockMoveLine.getRealQty().signum() != 0)
             .collect(Collectors.toList());
     for (StockMoveLine stockMoveLine : stockMoveLineToAllocateList) {
-      reservedQtyService.allocateAll(stockMoveLine);
+      stockMoveLineReservationService.allocate(stockMoveLine);
     }
   }
 }

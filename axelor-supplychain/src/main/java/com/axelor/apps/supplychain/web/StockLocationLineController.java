@@ -19,7 +19,7 @@ package com.axelor.apps.supplychain.web;
 
 import com.axelor.apps.stock.db.StockLocationLine;
 import com.axelor.apps.stock.db.repo.StockLocationLineRepository;
-import com.axelor.apps.supplychain.service.StockLocationLineReservationService;
+import com.axelor.apps.supplychain.service.stockreservation.StockLocationLineReservationService;
 import com.axelor.exception.service.TraceBackService;
 import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
@@ -28,7 +28,7 @@ import com.axelor.rpc.ActionResponse;
 public class StockLocationLineController {
 
   /**
-   * Called from stock location line form view, on allocateAll button click. Call {@link
+   * Called from stock location line form view, on allocate button click. Call {@link
    * StockLocationLineReservationService#allocateAll(StockLocationLine)}
    *
    * @param request

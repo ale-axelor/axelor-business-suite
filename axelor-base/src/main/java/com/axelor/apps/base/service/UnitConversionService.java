@@ -62,6 +62,26 @@ public class UnitConversionService {
   @Inject protected UnitConversionRepository unitConversionRepo;
 
   /**
+   * Convert a value from a unit to another. Manage the case where the unit is null by returning by
+   * default the given value.
+   *
+   * @param startUnit The starting unit
+   * @param endUnit The end unit
+   * @param value The value to convert
+   * @param product Optional, a product used for complex conversions. Input null if needless.
+   * @return The converted value with the specified scale
+   * @throws AxelorException
+   */
+  public BigDecimal convertManagingNullUnit(
+      Unit startUnit, Unit endUnit, BigDecimal value, Product product) throws AxelorException {
+    if (startUnit != null && !startUnit.equals(endUnit)) {
+      return convert(startUnit, endUnit, value, value.scale(), product);
+    } else {
+      return value;
+    }
+  }
+
+  /**
    * Convert a value from a unit to another
    *
    * @param startUnit The starting unit
